@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zipscene/common-query.git"
+    "url": "https://github.com/CrispyConductor/common-query.git"
   },
   "keywords": [
     "query",
