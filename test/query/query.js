@@ -36,6 +36,29 @@ describe('Query', function() {
 			};
 			expect(query.getData()).to.deep.equal(expected);
 		});
+		it('substitutes missing $vars using handleMissingVars option', function() {
+			const seen = [];
+			const options = {
+				vars: { present: 'here' },
+				handleMissingVars(varName) {
+					seen.push(varName);
+					return `missing:${varName}`;
+				}
+			};
+			const query = createQuery({
+				a: { $var: 'present' },
+				b: { $var: 'absent1' },
+				$and: [
+					{ c: { $var: 'absent2' } }
+				]
+			}, options);
+			expect(query.getData()).to.deep.equal({
+				a: 'here',
+				b: 'missing:absent1',
+				$and: [ { c: 'missing:absent2' } ]
+			});
+			expect(seen).to.deep.equal([ 'absent1', 'absent2' ]);
+		});
 	});
 
 	describe('getQueryPathSubschema()', function() {

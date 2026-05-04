@@ -112,6 +112,22 @@ console.log(query.matches({
 During query construction, the `$var` objects are replaced with the value specified by the vars option. Note that
 any missing `$var` substitution will result in an invalid query.
 
+To customize how missing variables are handled, you can supply a `handleMissingVars` option. When provided, this
+function is called with the missing variable name and its return value is substituted into the query in place
+of the `$var` expression:
+
+```javascript
+let query = createQuery(queryData, {
+	vars: { color: 'green' },
+	handleMissingVars(varName) {
+		// Substitute null (or any other value) for missing variables instead of throwing
+		return null;
+	}
+});
+```
+
+If `handleMissingVars` is not provided, encountering a missing variable throws a `MissingQueryVarError`.
+
 The query object also includes some additional functionality:
 
 ```javascript
